@@ -60,10 +60,11 @@ const Navbar = () => {
                                 : "rounded-[40px_0_0_40px]"
                         }`}
                         onFocus={handleFocusToggle}
-                        onBlur={() =>
-                            setTimeout(() => {
-                                handleFocusToggle();
-                            }, 500)
+                        onBlur={
+                            () =>
+                                // setTimeout(() => {
+                                handleFocusToggle()
+                            // }, 500)
                         }
                     />
                     <button
