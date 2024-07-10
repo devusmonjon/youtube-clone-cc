@@ -18,16 +18,21 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-dark;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer components {
+  button[disabled] {
+    @apply opacity-50 cursor-not-allowed pointer-events-none;
+  }
+
+  .list::-webkit-scrollbar {
+    @apply hidden;
   }
 }
