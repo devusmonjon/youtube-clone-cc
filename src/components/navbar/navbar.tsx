@@ -1,10 +1,15 @@
 "use client";
-import { ICONS } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+
+import { DATA, ICONS } from "@/constants";
 
 const Navbar = () => {
+    const router = useRouter();
+    const input = useRef<HTMLInputElement>(null);
+
     const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
     const [isNotificationsOpen, setIsNotificationsOpen] =
         useState<boolean>(false);
@@ -19,13 +24,21 @@ const Navbar = () => {
         seInputVal(e.target.value);
     };
 
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (inputVal.trim()) {
+            input.current?.blur();
+            router.push(`/search/${inputVal.trimStart().trimEnd()}`);
+        }
+    };
+
     return (
         <nav className="h-[56px] flex justify-between items-center px-[72px]">
             <Link href={"/"} className="w-[90px]">
                 {ICONS.logo.icon}
             </Link>
             <div className="flex gap-4">
-                <form className="flex relative">
+                <form className="flex relative" onSubmit={handleSearch}>
                     <div
                         className={`w-[36px] justify-end align-center ${
                             isSearchFocus
@@ -36,7 +49,8 @@ const Navbar = () => {
                         <div className="w-[20px]">{ICONS.search.icon}</div>
                     </div>
                     <input
-                        type="search"
+                        ref={input}
+                        type="text"
                         name="search"
                         placeholder="Search"
                         onChange={handleInput}
@@ -46,7 +60,11 @@ const Navbar = () => {
                                 : "rounded-[40px_0_0_40px]"
                         }`}
                         onFocus={handleFocusToggle}
-                        onBlur={handleFocusToggle}
+                        onBlur={() =>
+                            setTimeout(() => {
+                                handleFocusToggle();
+                            }, 500)
+                        }
                     />
                     <button
                         type="submit"
@@ -62,86 +80,34 @@ const Navbar = () => {
                         }`}
                     >
                         <ul>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
-                            <li className="flex items-center gap-4 hover:bg-[#404040] py-2">
-                                <div className="w-[20px] h-[20px] px-4 text-light">
-                                    <div className="w-[20px] h-[20px]">
-                                        {ICONS.search.icon}
-                                    </div>
-                                </div>
-                                <span className="pl-1">{inputVal}</span>
-                            </li>
+                            {[inputVal, ...DATA.searchQueryies]
+                                .slice(0, 15)
+                                .map((query) => {
+                                    if (query === inputVal) query = "";
+                                    return (
+                                        <li key={query} className="w-full">
+                                            <button
+                                                className="w-full flex items-center gap-4 hover:bg-[#404040] py-2"
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/search/${inputVal} ${query}`,
+                                                    )
+                                                }
+                                                title={query}
+                                                type="button"
+                                            >
+                                                <div className="w-[20px] h-[20px] px-4 text-light">
+                                                    <div className="w-[20px] h-[20px]">
+                                                        {ICONS.search.icon}
+                                                    </div>
+                                                </div>
+                                                <span className="pl-1">
+                                                    {inputVal} {query}
+                                                </span>
+                                            </button>
+                                        </li>
+                                    );
+                                })}
                         </ul>
                     </div>
                 </form>
@@ -188,11 +154,11 @@ const Navbar = () => {
                 <button
                     className="overflow-hidden w-[40px] h-[40px] flex justify-center items-center rounded-full bg-[#303030] relateive"
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    title="logo"
+                    title="Profile picture"
                 >
                     <Image
                         src={"https://picsum.photos/40"}
-                        alt="Logo"
+                        alt="Profile picture"
                         width={40}
                         height={40}
                     />
