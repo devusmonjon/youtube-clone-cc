@@ -1,6 +1,7 @@
 import { encode, decode, parse, stringify } from "urlencode";
 
 const SearchResults = ({ params }: { params: { query: string } }) => {
+    // @ts-expect-error
     const parsed: { query: string } = parse(`query=${params.query}`, {
         charset: "utf-8",
     });
